@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import React from 'react'
+
+import SideRoutes from './SideRoutes'
 
 const SideBar = () => {
   return (
@@ -16,7 +17,7 @@ const SideBar = () => {
         </p>
      </div>
      <div className='flex flex-col w-full'>
-
+        <SideRoutes />
      </div>
     </div>
   )
