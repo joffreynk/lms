@@ -14,22 +14,24 @@ const NavBarRoutes = () => {
   const isPlayer = pathname?.startsWith('/chapter/')
 
   return (
-    <div className='flex gap-x-2 ml-auto'>
-      {
-        isTeacher || isPlayer ? (
-          <Button>
-            <LogOut className='h-4 w-4 mr-2' />
+    <div className="flex gap-x-2 ml-auto">
+      {isTeacher || isPlayer ? (
+        <Link href="/">
+          <Button size="sm" variant="ghost">
+            <LogOut className="h-4 w-4 mr-2" />
             Exit
           </Button>
-        ): (
-          <Link href='/'>
-            
-          </Link>
-        )
-      }
-        <UserButton />
+        </Link>
+      ) : (
+        <Link href="/teacher/courses">
+          <Button size="sm" variant="ghost">
+            Teacher Mode
+          </Button>
+        </Link>
+      )}
+      <UserButton afterSignOutUrl="/" />
     </div>
-  )
+  );
 }
 
 export default NavBarRoutes
