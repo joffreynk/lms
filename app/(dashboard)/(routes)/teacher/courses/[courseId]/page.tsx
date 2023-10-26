@@ -5,6 +5,7 @@ import { prismaDB } from "@/lib/prismaDB";
 import { LayoutDashboard } from "lucide-react";
 import IconBadge from "@/components/iconBadge";
 import TitleForm from "./_components/titleForm";
+import DescriptionForm from "./_components/descriptionForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -50,6 +51,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
             <h2 className="text-xl">Customize your Course</h2>
           </div>
           <TitleForm initialData={course} />
+          <DescriptionForm initialData={course} />
         </div>
       </div>
     </div>
