@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { prismaDB } from "@/lib/prismaDB";
 import { LayoutDashboard } from "lucide-react";
+import IconBadge from "@/components/iconBadge";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -44,11 +45,10 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
       <div className="grid grid-cols-1 md:grid-col-2 gap-6 mt-16">
         <div>
           <div className="flex items-center gap-x-2">
-            <div className="bg-sky-700/20 p-1 rounded-full">
-              <LayoutDashboard className="text-sky-700 text-3xl" />
-            </div>
+            <IconBadge Icon={LayoutDashboard} />
             <h2 className="text-xl">Customize your Course</h2>
           </div>
+          
         </div>
       </div>
     </div>
