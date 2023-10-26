@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Pencil, X } from "lucide-react"
+import { revalidatePath } from "next/cache"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -39,10 +40,11 @@ const TitleForm = ({ initialData }: TitleFormProps) => {
 
   const {isSubmitting, isValid} = form.formState;
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      axios.patch(`/api/courses/${initialData.id}`, values);
+      await axios.patch(`/api/courses/${initialData.id}`, values);
       toast.success('Course updated successfully')
+      toggleEdit();
       router.refresh()
     } catch (error) {
       toast.error('OOOps something went wrong')
@@ -87,7 +89,7 @@ const TitleForm = ({ initialData }: TitleFormProps) => {
             />
             <div className="flex items-center gap-x-2">
               <Button
-              disabled={isSubmitting || isValid}
+              disabled={isSubmitting || !isValid}
               type="submit"
               >
                 Save
