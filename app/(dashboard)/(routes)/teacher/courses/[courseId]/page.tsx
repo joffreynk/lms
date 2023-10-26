@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { prismaDB } from "@/lib/prismaDB";
 import { LayoutDashboard } from "lucide-react";
 import IconBadge from "@/components/iconBadge";
+import TitleForm from "./_components/titleForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -48,7 +49,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
             <IconBadge Icon={LayoutDashboard} />
             <h2 className="text-xl">Customize your Course</h2>
           </div>
-          
+          <TitleForm initialData={course} />
         </div>
       </div>
     </div>
