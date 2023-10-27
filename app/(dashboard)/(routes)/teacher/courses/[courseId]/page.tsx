@@ -6,6 +6,7 @@ import { LayoutDashboard } from "lucide-react";
 import IconBadge from "@/components/iconBadge";
 import TitleForm from "./_components/titleForm";
 import DescriptionForm from "./_components/descriptionForm";
+import ImageForm from "./_components/imageForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -52,6 +53,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
           </div>
           <TitleForm initialData={course} />
           <DescriptionForm initialData={course} />
+          <ImageForm initialData={course} />
         </div>
       </div>
     </div>
