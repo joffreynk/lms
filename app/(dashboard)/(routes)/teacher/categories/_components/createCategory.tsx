@@ -51,7 +51,7 @@ export function CreateCategory({ initialData }:  CategoryFormProps ) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       isEditing?
-      await axios.patch(`/api/categories`, values)
+      await axios.patch(`/api/categories`, {...values, id: initialData?.id})
       : await axios.post(`/api/categories`, values);
       toast.success(`Category ${isEditing ? "Updated" : "created"} successfully`);
       router.refresh()

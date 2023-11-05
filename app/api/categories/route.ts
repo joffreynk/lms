@@ -25,3 +25,28 @@ export const POST = async (req: Request) => {
     
   }
 }
+
+export const PATCH = async (req: Request) => {
+  try {
+    const { name, id } = await req.json();
+    if (!name || !id) 
+      return new NextResponse("Category name or ID is required.", { status: 404 });
+    const { userId } = auth();
+
+    if (!userId) return redirect("/");
+
+    const category = await prismaDB.category.update({
+      data: {
+        name,
+        userId,
+      },
+      where: {
+        id
+      }
+    });
+    return NextResponse.json(category);
+  } catch (error) {
+    console.log("Error creating category");
+    return new NextResponse("Failed to create category name.", { status: 404 });
+  }
+};
