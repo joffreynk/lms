@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -13,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { Pencil } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -48,7 +50,9 @@ export function CreateCategory({ initialData }:  CategoryFormProps ) {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/categories`, values);
+      isEditing?
+      await axios.patch(`/api/categories`, values)
+      : await axios.post(`/api/categories`, values);
       toast.success(`Category ${isEditing ? "Updated" : "created"} successfully`);
       router.refresh()
     } catch (error) {
@@ -60,7 +64,7 @@ export function CreateCategory({ initialData }:  CategoryFormProps ) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">
-          {isEditing ? "Update" : "New"} Category
+          {isEditing ? <Pencil className="hover:text-blue-700" /> : "New Category"}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -97,9 +101,11 @@ export function CreateCategory({ initialData }:  CategoryFormProps ) {
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={isSubmitting || !isValid} type="submit">
-                Save
-              </Button>
+              <DialogClose asChild>
+                <Button disabled={isSubmitting || !isValid} type="submit">
+                  Save
+                </Button>
+              </DialogClose>
             </div>
           </form>
         </Form>
