@@ -7,6 +7,7 @@ import IconBadge from "@/components/iconBadge";
 import TitleForm from "./_components/titleForm";
 import DescriptionForm from "./_components/descriptionForm";
 import ImageForm from "./_components/imageForm";
+import CategoryForm from "./_components/categoryForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -22,6 +23,12 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
     });
 
     if(!course) return redirect('/');
+
+    const categories = await prismaDB.category.findMany({
+      orderBy: {
+        name: 'asc'
+      }
+    })
 
     const requiredFields = [
       course.title,
@@ -54,6 +61,10 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
           <TitleForm initialData={course} />
           <DescriptionForm initialData={course} />
           <ImageForm initialData={course} />
+          <CategoryForm
+            initialData={course}
+            options={categories.map((c) => ({ label: c.name, value: c.id }))}
+          />
         </div>
       </div>
     </div>
