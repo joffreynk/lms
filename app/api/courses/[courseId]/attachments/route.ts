@@ -35,3 +35,4 @@ export const POST = async(req: Request, {params}: {params: {courseId: string}}) 
     return new NextResponse('Internal server error', {status: 500});
   }
 }
+

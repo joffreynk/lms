@@ -51,7 +51,7 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
   const onDelete = async (id: string) => {
     try {
       setDeleteId(id);
-      await axios.post(`/api/courses/${initialData.id}/attachments/${id}`);
+      await axios.delete(`/api/courses/${initialData.id}/attachments/${id}`);
       toast.success('Attachment deleted')
       router.refresh()
     } catch (error) {
@@ -105,7 +105,7 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
               ) : (
                 <button
                 onClick={() =>onDelete(attach.id)}
-                 className="pl-3 hover:opacity-75 transition">
+                 className="pl-3 hover:opacity-75 ml-auto transition">
                   <X className="h4 w-4" />
                 </button>
               )}
