@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Attachment, Course } from "@prisma/client"
 import axios from "axios"
-import { ImageIcon, Pencil, PlusCircle, X } from "lucide-react"
-import Image from "next/image"
+import { File, PlusCircle, X } from "lucide-react";
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -62,7 +61,7 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
               <PlusCircle className="h-4 w-4 mr-2" />
               Add file
             </>
-          ) }
+          )}
         </Button>
       </div>
       {isEditing ? (
@@ -74,18 +73,30 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
             }
           }}
         />
-      ) : (
-        <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-          {initialData.attachments?.length ? (
-            <div className="relative aspect-video h-60 ">
-              Add anything your students might need to complete the course
+      ) : (initialData.attachments?.length ? (
+            <div className="flex flex-col gap-3">
+              {
+                initialData.attachments.map(attach=>(
+                  <div
+                  key={attach.id}
+                  className="flex items-center p-3 bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
+                  >
+                    <File  className="h-4 w-4 mr-2 flex-shrink-0"  />
+                    <p className="text-xs line-clamp-1">
+                      {attach.url.split("/").pop()}
+                    </p>
+                  </div>
+                ))
+              }
+              <div className="relative aspect-video h-60 ">
+                Add anything your students might need to complete the course
+              </div>
             </div>
           ) : (
             <p className="text-sm mt-2 text-slate-500 italic">
               No attachments yet
             </p>
-          )}
-        </div>
+          )
       )}
     </div>
   );
