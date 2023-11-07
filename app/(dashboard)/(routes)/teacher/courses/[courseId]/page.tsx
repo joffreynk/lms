@@ -2,12 +2,13 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { prismaDB } from "@/lib/prismaDB";
-import { LayoutDashboard } from "lucide-react";
+import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
 import IconBadge from "@/components/iconBadge";
 import TitleForm from "./_components/titleForm";
 import DescriptionForm from "./_components/descriptionForm";
 import ImageForm from "./_components/imageForm";
 import CategoryForm from "./_components/categoryForm";
+import PriceForm from "./_components/priceForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -52,7 +53,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-col-2 gap-6 mt-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         <div>
           <div className="flex items-center gap-x-2">
             <IconBadge Icon={LayoutDashboard} />
@@ -65,6 +66,22 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
             initialData={course}
             options={categories.map((c) => ({ label: c.name, value: c.id }))}
           />
+        </div>
+        <div className="space-y-6">
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge Icon={ListChecks} />
+              <h2 className="text-xl">course Chapters </h2>
+            </div>
+            <div>TODO: Chapters</div>
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge Icon={CircleDollarSign} />
+              <h2 className="text-xl">Sell your Course</h2>
+            </div>
+            <PriceForm initialData={course} />
+          </div>
         </div>
       </div>
     </div>
