@@ -15,20 +15,20 @@ import * as z from "zod"
 
 type PriceFormProps = {
     initialData: {
-        description?: string | null,
+        price?: number | null,
         id: string
     }
 }
 
 const formSchema = z.object({
-  description: z.string().min(3, { message: "Description is required" }),
+  price: z.coerce.number(),
 });
 
 const PriceForm = ({ initialData }: PriceFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData.description || ""
+      price: initialData.price || 0
     }
   });
 
@@ -53,7 +53,7 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course description
+        Course price
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>
@@ -63,7 +63,7 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit description
+              Edit price
             </>
           )}
         </Button>
@@ -76,7 +76,7 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
           >
             <FormField
               control={form.control}
-              name="description"
+              name="price"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -99,8 +99,8 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
           </form>
         </Form>
       ) : (
-        <p className={cn("text-sm mt-2", !initialData.description && "to-slate-100 italic")}>
-          {initialData.description || "No description"}
+        <p className={cn("text-sm mt-2", !initialData.price && "to-slate-100 italic")}>
+          {initialData.price || "No Price set"}
         </p>
       )}
     </div>
