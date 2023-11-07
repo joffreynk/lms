@@ -2,13 +2,19 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { prismaDB } from "@/lib/prismaDB";
-import { CircleDollarSign, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+  CircleDollarSign,
+  LayoutDashboard,
+  ListChecks,
+  File,
+} from "lucide-react";
 import IconBadge from "@/components/iconBadge";
 import TitleForm from "./_components/titleForm";
 import DescriptionForm from "./_components/descriptionForm";
 import ImageForm from "./_components/imageForm";
 import CategoryForm from "./_components/categoryForm";
 import PriceForm from "./_components/priceForm";
+import AttachmentForm from "./_components/attachmentForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -21,6 +27,9 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
         id: params.courseId,
         userId,
       },
+      include: {
+        attachments: true,
+      }
     });
 
     if(!course) return redirect('/');
@@ -81,6 +90,13 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
               <h2 className="text-xl">Sell your Course</h2>
             </div>
             <PriceForm initialData={course} />
+          </div>
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge Icon={File} />
+              <h2 className="text-xl">Resources & Attachments</h2>
+            </div>
+            <AttachmentForm initialData={course} />
           </div>
         </div>
       </div>
