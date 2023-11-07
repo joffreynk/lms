@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
+import { cn, formatprice } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { Pencil, X } from "lucide-react"
@@ -28,7 +29,7 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      price: initialData.price || 0
+      price: initialData.price || undefined
     }
   });
 
@@ -80,11 +81,12 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Textarea
+                    <Input
                       disabled={isSubmitting}
-                      placeholder="e.g 'This course is about ...'"
+                      placeholder="5.45"
                       {...field}
-                      rows={5}
+                      type="number"
+                      step="0.01"
                     />
                   </FormControl>
                   <FormMessage />
@@ -99,8 +101,14 @@ const PriceForm = ({ initialData }: PriceFormProps) => {
           </form>
         </Form>
       ) : (
-        <p className={cn("text-sm mt-2", !initialData.price && "to-slate-100 italic")}>
-          {initialData.price || "No Price set"}
+        <p
+          className={cn(
+            "text-sm mt-2",
+            !initialData.price && "to-slate-100 italic"
+          )}
+        >
+          {(initialData.price && formatprice(initialData.price)) ||
+            "No Price"}
         </p>
       )}
     </div>
