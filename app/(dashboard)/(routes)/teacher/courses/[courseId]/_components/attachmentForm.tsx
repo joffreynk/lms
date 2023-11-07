@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Attachment, Course } from "@prisma/client"
 import axios from "axios"
-import { File, PlusCircle, X } from "lucide-react";
+import { File, Loader2, PlusCircle, X } from "lucide-react";
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -29,6 +29,7 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
   });
 
   const [isEditing, setIsEditing] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const router = useRouter()
 
@@ -44,6 +45,19 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
       router.refresh()
     } catch (error) {
       toast.error('OOOps something went wrong')
+    }
+  }
+
+  const onDelete = async (id: string) => {
+    try {
+      setDeleteId(id);
+      await axios.post(`/api/courses/${initialData.id}/attachments/${id}`);
+      toast.success('Attachment deleted')
+      router.refresh()
+    } catch (error) {
+      toast.error("Something went  wrong")
+    } finally {
+      setDeleteId(null);
     }
   }
   return (
@@ -73,30 +87,36 @@ const AttachmentForm = ({ initialData }: AttachmentFormProps) => {
             }
           }}
         />
-      ) : (initialData.attachments?.length ? (
-            <div className="flex flex-col gap-3">
-              {
-                initialData.attachments.map(attach=>(
-                  <div
-                  key={attach.id}
-                  className="flex items-center p-3 bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
-                  >
-                    <File  className="h-4 w-4 mr-2 flex-shrink-0"  />
-                    <p className="text-xs line-clamp-1">
-                      {attach.url.split("/").pop()}
-                    </p>
-                  </div>
-                ))
-              }
-              <div className="relative aspect-video h-60 ">
-                Add anything your students might need to complete the course
-              </div>
+      ) : initialData.attachments?.length ? (
+        <div className="flex flex-col gap-3">
+          {initialData.attachments.map((attach) => (
+            <div
+              key={attach.id}
+              className="flex items-center p-3 bg-sky-100 border-sky-200 border text-sky-700 rounded-md"
+            >
+              <File className="h-4 w-4 mr-2 flex-shrink-0" />
+              <p className="text-xs line-clamp-1">
+                {attach.url.split("/").pop()}
+              </p>
+              {deleteId === attach.id ? (
+                <div>
+                  <Loader2 className="h4 pl-3 w-4 animate-spin" />
+                </div>
+              ) : (
+                <button
+                onClick={() =>onDelete(attach.id)}
+                 className="pl-3 hover:opacity-75 transition">
+                  <X className="h4 w-4" />
+                </button>
+              )}
             </div>
-          ) : (
-            <p className="text-sm mt-2 text-slate-500 italic">
-              No attachments yet
-            </p>
-          )
+          ))}
+          <div className="relative aspect-video h-60 ">
+            Add anything your students might need to complete the course
+          </div>
+        </div>
+      ) : (
+        <p className="text-sm mt-2 text-slate-500 italic">No attachments yet</p>
       )}
     </div>
   );
