@@ -15,6 +15,7 @@ import ImageForm from "./_components/imageForm";
 import CategoryForm from "./_components/categoryForm";
 import PriceForm from "./_components/priceForm";
 import AttachmentForm from "./_components/attachmentForm";
+import ChaptersForm from "./_components/chaptersForm";
 
 const CourseDetails = async({params}: {params: {courseId: string}}) => {
 
@@ -84,7 +85,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
               <IconBadge Icon={ListChecks} />
               <h2 className="text-xl">course Chapters </h2>
             </div>
-            <DescriptionForm initialData={course} />
+            <ChaptersForm initialData={course} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">

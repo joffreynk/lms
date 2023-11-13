@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Course } from "@prisma/client"
+import { Chapter, Course } from "@prisma/client"
 import axios from "axios"
 import { Pencil, PlusCircle, X } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -16,7 +16,7 @@ import toast from "react-hot-toast"
 import * as z from "zod"
 
 type ChaptersFormProps = {
-    initialData: Course
+    initialData: Course & {chapters: Chapter[]}
 }
 
 const formSchema = z.object({
@@ -53,7 +53,7 @@ const ChaptersForm = ({ initialData }: ChaptersFormProps) => {
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course description
+        Course Chapter
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>
@@ -82,7 +82,7 @@ const ChaptersForm = ({ initialData }: ChaptersFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g 'This chapter is about ...'"
+                      placeholder="e.g 'Introduction to HTML'"
                       {...field}
                     />
                   </FormControl>
@@ -90,17 +90,26 @@ const ChaptersForm = ({ initialData }: ChaptersFormProps) => {
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
-              <Button disabled={isSubmitting || !isValid} type="submit">
-                Save
-              </Button>
-            </div>
+            <Button disabled={isSubmitting || !isValid} type="submit">
+              Create chapter
+            </Button>
           </form>
         </Form>
       ) : (
-        <p className={cn("text-sm mt-2", !initialData.description && "to-slate-100 italic")}>
-          {initialData.description || "No description"}
-        </p>
+        <>
+          <div
+            className={cn(
+              "text-sm mt-2",
+              initialData.chapters.length && "text-slate-500 italic"
+            )}
+          >
+            {initialData.chapters.length && "No chapter"}
+            {/* TODO: Add a list of chapters */}
+          </div>
+          <p className="text-xs text-muted-foreground mt-4">
+            Drag and drop to reorder the chapters
+          </p>
+        </>
       )}
     </div>
   );
