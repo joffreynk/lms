@@ -29,6 +29,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
       },
       include: {
         attachments: true,
+        chapters: true,
       }
     });
 
@@ -46,6 +47,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
       course.imageUrl,
       course.price,
       course.categoryId,
+      course.chapters.some(chapter=>chapter.isPublished),
     ];
 
     const totalFields = requiredFields.length;
@@ -82,7 +84,7 @@ const CourseDetails = async({params}: {params: {courseId: string}}) => {
               <IconBadge Icon={ListChecks} />
               <h2 className="text-xl">course Chapters </h2>
             </div>
-            <div>TODO: Chapters</div>
+            <DescriptionForm initialData={course} />
           </div>
           <div>
             <div className="flex items-center gap-x-2">
